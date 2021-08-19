@@ -17,7 +17,7 @@ public class UploadServlet extends HttpServlet {
      * Name of the directory where uploaded files will be saved, relative to
      * the web application directory.
      */
-    private static final String SAVE_DIR = "uploadFiles";
+    private static final String SAVE_DIR = "download";
      
     /**
      * handles file upload
