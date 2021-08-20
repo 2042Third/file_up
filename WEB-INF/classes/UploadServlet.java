@@ -34,7 +34,7 @@ public class UploadServlet extends HttpServlet {
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdir();
         }
-         
+        print_out(request);
         for (Part part : request.getParts()) {
             String fileName = extractFileName(part);
             // refines the fileName in case it is an absolute path
@@ -57,5 +57,17 @@ public class UploadServlet extends HttpServlet {
             }
         }
         return "";
+    }
+
+    /**
+     * Print the entire request to std out.
+     * */
+    private print_out (HttpServletRequest request){
+        System.out.println("#############POST REQUEST###############");
+        Enumeration<String> params = request.getParameterNames(); 
+        while(params.hasMoreElements()){
+             String paramName = params.nextElement();
+             System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
+        }
     }
 }
