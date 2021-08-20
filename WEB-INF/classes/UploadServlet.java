@@ -62,7 +62,7 @@ public class UploadServlet extends HttpServlet {
     /**
      * Print the entire request to std out.
      * */
-    private print_out (HttpServletRequest request){
+    private void print_out (HttpServletRequest request){
         System.out.println("#############POST REQUEST###############");
         Enumeration<String> params = request.getParameterNames(); 
         while(params.hasMoreElements()){
