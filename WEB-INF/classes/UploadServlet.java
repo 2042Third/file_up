@@ -72,6 +72,20 @@ public class UploadServlet extends HttpServlet {
         }
         return "";
     }
+    /**
+     * Extracts file name from HTTP header content-disposition
+     */
+    private String extractUserName(Part part) {
+        String contentDisp = part.getHeader("content-disposition");
+        String[] items = contentDisp.split(";");
+        for (String s : items) {
+            System.out.println(s);
+            if (s.trim().startsWith("user_name")) {
+                return s.substring(s.indexOf("=") + 2, s.length()-1);
+            }
+        }
+        return "";
+    }
 
     /**
      * Print the entire request to std out.
