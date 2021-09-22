@@ -67,9 +67,26 @@ public class UploadServlet extends HttpServlet {
     private void print_out (HttpServletRequest request){
         System.out.println("#############POST REQUEST###############");
         Enumeration<String> params = request.getParameterNames(); 
-        while(params.hasMoreElements()){
-             String paramName = params.nextElement();
-             System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
+        String uname="", projname = "";
+        if (params != null && !params.isEmpty()) {
+          Map<String,String> parameterMap = splitQuery(params);
+          if (parameterMap.containsKey("user_name")) {
+            uname = parameterMap.get("user_name");
+          }
+          if (parameterMap.containsKey("project")) {
+            projname = parameterMap.get("project");
+          }
+          
         }
+        if(!uname.equals("")){
+            System.out.println("user_name recieved: "+uname);
+        }
+        if(!projname.equals("")){
+            System.out.println("projname recieved: "+projname);
+        }
+        // while(params.hasMoreElements()){
+        //      String paramName = params.nextElement();
+        //      System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
+        // }
     }
 }
