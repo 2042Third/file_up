@@ -66,7 +66,9 @@ public class UploadServlet extends HttpServlet {
      * */
     private void print_out (HttpServletRequest request){
         System.out.println("#############POST REQUEST###############");
-        Enumeration<String> params = request.getParameterNames(); 
+        // Enumeration<String> params = request.getParameterNames(); 
+        
+        String params = request.getQueryString();
         String uname="", projname = "";
         if (params != null && !params.isEmpty()) {
           Map<String,String> parameterMap = splitQuery(params);
