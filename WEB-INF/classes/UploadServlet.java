@@ -51,6 +51,7 @@ public class UploadServlet extends HttpServlet {
         }
         // print_out(request);
         for (Part part : request.getParts()) {
+            System.out.println(part.getName());
             String fileName = extractFileName(part);
             // refines the fileName in case it is an absolute path
             fileName = new File(fileName).getName();
@@ -66,7 +67,6 @@ public class UploadServlet extends HttpServlet {
     private String extractFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
         System.out.println(contentDisp);
-        System.out.println(part.getName());
         String[] items = contentDisp.split(";");
         for (String s : items) {
             if (s.trim().startsWith("filename")) {
