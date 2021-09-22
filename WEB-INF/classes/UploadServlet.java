@@ -82,6 +82,8 @@ public class UploadServlet extends HttpServlet {
         
         String params = request.getQueryString();
         String uname="", projname = "";
+        System.out.println("full length form: "+params);
+
         if (params != null && !params.isEmpty()) {
           try{
             Map<String,String> parameterMap = splitQuery(params);
