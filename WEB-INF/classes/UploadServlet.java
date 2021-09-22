@@ -83,7 +83,12 @@ public class UploadServlet extends HttpServlet {
         String params = request.getQueryString();
         String uname="", projname = "";
         if (params != null && !params.isEmpty()) {
-          Map<String,String> parameterMap = splitQuery(params);
+          try{
+            Map<String,String> parameterMap = splitQuery(params);
+          }
+          catch(Exception e){
+            System.out.println("splitQuery failure");
+          }
           if (parameterMap.containsKey("user_name")) {
             uname = parameterMap.get("user_name");
           }
