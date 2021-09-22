@@ -2,6 +2,8 @@ package net.codejava.servlet;
 import java.io.File;
 import java.util.*;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +21,7 @@ public class UploadServlet extends HttpServlet {
      * the web application directory.
      */
     private static final String SAVE_DIR = "download";
-    
+
     public static Map<String, String> splitQuery(String query) throws UnsupportedEncodingException {
       Map<String, String> query_pairs = new LinkedHashMap<String, String>();
       String[] pairs = query.split("&");
