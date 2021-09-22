@@ -85,16 +85,17 @@ public class UploadServlet extends HttpServlet {
         if (params != null && !params.isEmpty()) {
           try{
             Map<String,String> parameterMap = splitQuery(params);
+            if (parameterMap.containsKey("user_name")) {
+              uname = parameterMap.get("user_name");
+            }
+            if (parameterMap.containsKey("project")) {
+              projname = parameterMap.get("project");
+            }
           }
           catch(Exception e){
             System.out.println("splitQuery failure");
           }
-          if (parameterMap.containsKey("user_name")) {
-            uname = parameterMap.get("user_name");
-          }
-          if (parameterMap.containsKey("project")) {
-            projname = parameterMap.get("project");
-          }
+          
           
         }
         if(!uname.equals("")){
