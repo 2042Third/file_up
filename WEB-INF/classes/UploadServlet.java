@@ -47,7 +47,7 @@ public class UploadServlet extends HttpServlet {
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdir();
         }
-        print_out(request);
+        // print_out(request);
         for (Part part : request.getParts()) {
             String fileName = extractFileName(part);
             // refines the fileName in case it is an absolute path
