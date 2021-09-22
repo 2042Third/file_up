@@ -66,6 +66,7 @@ public class UploadServlet extends HttpServlet {
     private String extractFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
         System.out.println(contentDisp);
+        System.out.println(part.getName());
         String[] items = contentDisp.split(";");
         for (String s : items) {
             if (s.trim().startsWith("filename")) {
