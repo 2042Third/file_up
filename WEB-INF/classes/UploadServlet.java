@@ -38,7 +38,7 @@ public class UploadServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         System.out.println("#############POST REQUEST###############");
-        
+
         // gets absolute path of the web application
         String appPath = request.getServletContext().getRealPath("");
         // constructs path of the directory to save uploaded file
@@ -65,9 +65,9 @@ public class UploadServlet extends HttpServlet {
      */
     private String extractFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
+        System.out.println(contentDisp);
         String[] items = contentDisp.split(";");
         for (String s : items) {
-            System.out.println(s);
             if (s.trim().startsWith("filename")) {
                 return s.substring(s.indexOf("=") + 2, s.length()-1);
             }
