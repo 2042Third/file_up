@@ -53,7 +53,7 @@ public class UploadServlet extends HttpServlet {
         for (Part part : request.getParts()) {
             System.out.println(part.getName());
             String fileName = extractFileName(part);
-            if(fileName.eqauls("")){
+            if(fileName.equals("")){
                String userName = extractUserName(part); 
                System.out.println("Access account for \""+userName+"\", saving in process...");
                break;
