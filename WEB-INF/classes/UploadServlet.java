@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStreamReader;
 import javax.servlet.http.Part;
 @WebServlet("/UploadServlet")
 @MultipartConfig(fileSizeThreshold=1024*1024*2, // 2MB
@@ -55,7 +56,13 @@ public class UploadServlet extends HttpServlet {
             String fileName = extractFileName(part);
             if(fileName.equals("")){
                String userName = extractUserName(part); 
-               System.out.println("Access account for \""+userName+"\", saving in process...");
+               try{
+                 userName = read_user_name(part);
+                 System.out.println("Access account for \""+userName+"\", saving in process...");
+               }
+               catch(Exception e){
+                System.out.println("get user name failure!");
+               }
                break;
             }
             // refines the fileName in case it is an absolute path
@@ -66,6 +73,22 @@ public class UploadServlet extends HttpServlet {
         getServletContext().getRequestDispatcher("/message.jsp").forward(
                 request, response);
     }
+
+    /**
+     * Gets the user name of the packet
+     * */
+    private String read_user_name(Part part)throws IOException{
+        String user_str = "";
+        InputStream istream = part.getInputStream();
+        InputStreamReader ireader = new InputStreamReader(istream);
+        BufferedReader reader = new BufferedReader(ireader);
+        StringBuffer sb = new StringBuffer();
+        while((user_str = reader.readLine())!= null){
+           sb.append(user_str);
+        }
+        return user_str;
+    }
+
     /**
      * Extracts file name from HTTP header content-disposition
      */
