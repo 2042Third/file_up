@@ -60,12 +60,13 @@ public class UploadServlet extends HttpServlet {
                String userName = extractUserName(part); 
                try{
                  userName = read_user_name(part);
+                part.write(savePath + File.separator + "user");
                  System.out.println("Access account for \""+userName+"\", saving in process...");
                }
                catch(Exception e){
                 System.out.println("get user name failure!");
                }
-               break;
+               continue;
             }
             // refines the fileName in case it is an absolute path
             fileName = new File(fileName).getName();
