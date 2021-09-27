@@ -75,6 +75,7 @@ public class UploadServlet extends HttpServlet {
         String[] items = contentDisp.split(";");
         for (String s : items) {
             if (s.trim().startsWith("filename")) {
+                System.out.println(s);
                 return s.substring(s.indexOf("=") + 2, s.length()-1);
             }
         }
