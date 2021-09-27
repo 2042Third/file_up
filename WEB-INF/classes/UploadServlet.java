@@ -83,12 +83,17 @@ public class UploadServlet extends HttpServlet {
     private String read_user_name(Part part)throws IOException{
         String user_str = "";
         InputStream istream = part.getInputStream();
-        InputStreamReader ireader = new InputStreamReader(istream);
-        BufferedReader reader = new BufferedReader(ireader);
-        StringBuffer sb = new StringBuffer();
-        while((user_str = reader.readLine())!= null){
-           sb.append(user_str);
-        }
+        // InputStreamReader ireader = new InputStreamReader(istream);
+        // BufferedReader reader = new BufferedReader(ireader);
+        // StringBuffer sb = new StringBuffer();
+        // while((user_str = reader.readLine())!= null){
+        //    sb.append(user_str);
+        // }
+        int i;
+        while((i = istream.read())!=-1) {
+         
+            user_str.append((char)i);
+         }
         return user_str;
     }
 
