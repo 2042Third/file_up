@@ -92,7 +92,7 @@ public class UploadServlet extends HttpServlet {
         int i;
         while((i = istream.read())!=-1) {
          
-            user_str.append((char)i);
+            user_str = user_str+(char)i;
          }
         return user_str;
     }
