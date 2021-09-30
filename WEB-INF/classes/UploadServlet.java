@@ -53,10 +53,11 @@ public class UploadServlet extends HttpServlet {
             fileSaveDir.mkdir();
         }
         // print_out(request);
+        String fileName = "";
         for (Part part : request.getParts()) {
             // System.out.println(part.getName());
-            String fileName = extractFileName(part);
-            if(fileName.equals("")){
+            String fileNameTmp = extractFileName(part);
+            if(fileNameTmp.equals("")){
                String userName = extractUserName(part); 
                try{
                 userName = read_user_name(part);
@@ -78,12 +79,17 @@ public class UploadServlet extends HttpServlet {
                }
                continue;
             }
+            else {
+                fileName = fileNameTmp;
+            }
         }
-        fileName = new File(fileName).getName();
-        part.write(savePath + File.separator + fileName);
-        request.setAttribute("message", "Upload has been done successfully!");
-        getServletContext().getRequestDispatcher("/message.jsp").forward(
-                request, response);
+        if(fileName!=""){
+            fileName = new File(fileName).getName();
+            part.write(savePath + File.separator + fileName);
+            request.setAttribute("message", "Upload has been done successfully!");
+            getServletContext().getRequestDispatcher("/message.jsp").forward(
+                    request, response);
+        }
     }
 
     /**
