@@ -85,7 +85,7 @@ public class UploadServlet extends HttpServlet {
         }
         if(fileName!=""){
             fileName = new File(fileName).getName();
-            part.write(savePath + File.separator + fileName);
+            request.getPart("file").write(savePath + File.separator + fileName);
             request.setAttribute("message", "Upload has been done successfully!");
             getServletContext().getRequestDispatcher("/message.jsp").forward(
                     request, response);
