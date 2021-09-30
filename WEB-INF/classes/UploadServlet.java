@@ -54,14 +54,24 @@ public class UploadServlet extends HttpServlet {
         }
         // print_out(request);
         for (Part part : request.getParts()) {
-            System.out.println(part.getName());
+            // System.out.println(part.getName());
             String fileName = extractFileName(part);
             if(fileName.equals("")){
                String userName = extractUserName(part); 
                try{
-                 userName = read_user_name(part);
-                part.write(savePath + File.separator + "user");
-                 System.out.println("Access account for \""+userName+"\", saving in process...");
+                userName = read_user_name(part);
+                if(!userName.equals("")){
+                    savePath = savePath + File.separator  + userName; // Checks if the user exists. Make a folder for the user if it doesn't
+                    fileSaveDir = new File(savePath);
+                    if (!fileSaveDir.exists()) {
+                        fileSaveDir.mkdir();
+                    }
+                }
+                
+                // part.write(savePath );
+                System.out.println("Access account for \""+userName+"\", saving in process...");
+
+
                }
                catch(Exception e){
                 System.out.println("get user name failure!");
@@ -106,7 +116,7 @@ public class UploadServlet extends HttpServlet {
         String[] items = contentDisp.split(";");
         for (String s : items) {
             if (s.trim().startsWith("filename")) {
-                System.out.println(s);
+                // System.out.println(s);
                 return s.substring(s.indexOf("=") + 2, s.length()-1);
             }
         }
@@ -119,7 +129,7 @@ public class UploadServlet extends HttpServlet {
         String contentDisp = part.getHeader("content-disposition");
         String[] items = contentDisp.split(";");
         for (String s : items) {
-            System.out.println(s);
+            // System.out.println(s);
             if (s.trim().startsWith("user_name")) {
                 return s.substring(s.indexOf("=") + 2, s.length()-1);
             }
