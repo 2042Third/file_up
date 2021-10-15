@@ -66,12 +66,12 @@ public class UploadServlet extends HttpServlet {
                     fileSaveDir = new File(savePath);
                     if (!fileSaveDir.exists()) {
                         fileSaveDir.mkdir();
+                        System.out.println("New user, access account for \""+userName+"\", saving in process...");
+                    }
+                    else {
+                        System.out.println("Access account for \""+userName+"\", saving in process...");
                     }
                 }
-                
-                // part.write(savePath );
-                System.out.println("Access account for \""+userName+"\", saving in process...");
-
 
                }
                catch(Exception e){
@@ -83,8 +83,20 @@ public class UploadServlet extends HttpServlet {
                 fileName = fileNameTmp;
             }
         }
-        if(fileName!=""){
+        if (fileName.equals(".pdmrc")){
             fileName = new File(fileName).getName();
+            configSaveDir = new File(savePath+File.separator+"config");
+            if (!configSaveDir.exists()) {
+                configSaveDir.mkdir();
+            }
+            request.getPart("file").write(configSaveDir + File.separator + fileName);
+            request.setAttribute("message", "Upload has been done successfully!");
+            getServletContext().getRequestDispatcher("/message.jsp").forward(
+                    request, response);
+        }
+        else if(fileName!=""){
+            fileName = new File(fileName).getName();
+
             request.getPart("file").write(savePath + File.separator + fileName);
             request.setAttribute("message", "Upload has been done successfully!");
             getServletContext().getRequestDispatcher("/message.jsp").forward(
