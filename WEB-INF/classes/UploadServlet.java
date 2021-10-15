@@ -83,13 +83,14 @@ public class UploadServlet extends HttpServlet {
                 fileName = fileNameTmp;
             }
         }
-        if (fileName.equals(".pdmrc")){
+        if (fileName.equals(".pdmrc")){//config saving
             fileName = new File(fileName).getName();
-            configSaveDir = new File(savePath+File.separator+"config");
+            File configSaveDir = new File(savePath+File.separator+"config");
             if (!configSaveDir.exists()) {
                 configSaveDir.mkdir();
             }
-            request.getPart("file").write(configSaveDir + File.separator + fileName);
+            request.getPart("file").write(savePath+File.separator+"config" 
+                                            + File.separator + fileName);
             request.setAttribute("message", "Upload has been done successfully!");
             getServletContext().getRequestDispatcher("/message.jsp").forward(
                     request, response);
