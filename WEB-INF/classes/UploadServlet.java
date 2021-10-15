@@ -83,7 +83,7 @@ public class UploadServlet extends HttpServlet {
                 fileName = fileNameTmp;
             }
         }
-        if (fileName.equals(".pdmrc")){//config saving
+        if (fileName.equals("pdm_rc.conf")){//config saving
             fileName = new File(fileName).getName();
             File configSaveDir = new File(savePath+File.separator+"config");
             if (!configSaveDir.exists()) {
