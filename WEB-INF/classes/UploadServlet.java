@@ -103,6 +103,12 @@ public class UploadServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/message.jsp").forward(
                     request, response);
         }
+
+        HttpHeaders headers = response.headers();
+        headers.map().forEach((k, v) -> System.out.println(k + ":" + v));
+
+
+        System.out.printf("%s\n%s\n",request.statusCode(),request.body());
     }
 
     /**
