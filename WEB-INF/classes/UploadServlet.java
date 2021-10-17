@@ -55,7 +55,7 @@ public class UploadServlet extends HttpServlet {
         // print_out(request);
         String fileName = "";
         for (Part part : request.getParts()) {
-            // System.out.println(part.getName());
+            System.out.println(part.getName());
             String fileNameTmp = extractFileName(part);
             if(fileNameTmp.equals("")){
                String userName = extractUserName(part); 
@@ -136,7 +136,7 @@ public class UploadServlet extends HttpServlet {
      */
     private String extractFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
-        System.out.println(contentDisp);
+        // System.out.println(contentDisp);
         String[] items = contentDisp.split(";");
         for (String s : items) {
             if (s.trim().startsWith("filename")) {
