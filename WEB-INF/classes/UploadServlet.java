@@ -71,7 +71,7 @@ public class UploadServlet extends HttpServlet {
             }
         }
         switch(serv_type){
-            case ServiceTypePDM.PDMNOTESYNC:
+            case PDMNOTESYNC:
                 save_the_file(fileName,savePath, request.getPart("file"));
                 request.setAttribute("message", "Upload has been done successfully!");
                 getServletContext().getRequestDispatcher("/message.jsp").forward(
