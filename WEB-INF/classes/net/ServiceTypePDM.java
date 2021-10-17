@@ -1,0 +1,3 @@
+public enum ServiceTypePDM {
+  NON,NETWORK, PDMNOTESYNC, PDMNETWORKCHECK
+}

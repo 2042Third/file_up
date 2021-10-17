@@ -41,7 +41,7 @@ public class UploadServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         System.out.println("#############POST REQUEST###############");
-
+        ServiceTypePDM serv_type = ServiceTypePDM.NON;
         // gets absolute path of the web application
         String appPath = request.getServletContext().getRealPath("");
         // constructs path of the directory to save uploaded file
@@ -55,32 +55,24 @@ public class UploadServlet extends HttpServlet {
         // print_out(request);
         String fileName = "";
         for (Part part : request.getParts()) {
-            System.out.println(part.getName());
-            String fileNameTmp = extractFileName(part);
-            if(fileNameTmp.equals("")){
-               String userName = extractUserName(part); 
-               try{
-                userName = read_user_name(part);
-                if(!userName.equals("")){
-                    savePath = savePath + File.separator  + userName; // Checks if the user exists. Make a folder for the user if it doesn't
-                    fileSaveDir = new File(savePath);
-                    if (!fileSaveDir.exists()) {
-                        fileSaveDir.mkdir();
-                        System.out.println("New user, access account for \""+userName+"\", saving in process...");
+            System.out.println("Part: "+part.getName());
+            
+            //get the purpose of the connection, and resolve
+            switch(part.getName()){
+                case "file":
+                    String fileNameTmp = extractFileName(part);
+                    fileName = fileNameTmp;
+                    continue;
+                case "user_name":
+                    userName = extractUserName(part);
+                    savePath = set_up_user_path(part,savePath,fileSaveDir);
+                    continue;
+                case "serv_type":
+                    if(read_serv_type(part).equals("pdm_note_sync")){
+                        serv_type=ServiceTypePDM.PDMNOTESYNC;
+                        System.out.println("\tService: pdm note sync");
                     }
-                    else {
-                        System.out.println("Access account for \""+userName+"\", saving in process...");
-                    }
-                }
-
-               }
-               catch(Exception e){
-                System.out.println("get user name failure!");
-               }
-               continue;
-            }
-            else {
-                fileName = fileNameTmp;
+                    continue;
             }
         }
         if (fileName.equals("pdm_rc.conf")){//config saving
@@ -111,24 +103,54 @@ public class UploadServlet extends HttpServlet {
         // System.out.printf("%s\n%s\n",request.statusCode(),request.body());
     }
 
+    private String set_up_user_path(Part part,String savePath,String fileSaveDir){
+        String userName = extractUserName(part); 
+        try{
+            userName = read_user_name(part);
+            if(!userName.equals("")){
+                savePath = savePath + File.separator  + userName; // Checks if the user exists. Make a folder for the user if it doesn't
+                fileSaveDir = new File(savePath);
+                if (!fileSaveDir.exists()) {
+                    fileSaveDir.mkdir();
+                    System.out.println("New user, access account for \""+userName+"\", saving in process...");
+                }
+                else {
+                    System.out.println("Access account for \""+userName+"\", saving in process...");
+                }
+            }
+        }
+        catch(Exception e){
+            System.out.println("get user name failure!");
+        }
+        return savePath;
+    }
+
     /**
      * Gets the user name of the packet
      * */
     private String read_user_name(Part part)throws IOException{
         String user_str = "";
+        if (!part.getName().equals("user_name")) return user_str;
         InputStream istream = part.getInputStream();
-        // InputStreamReader ireader = new InputStreamReader(istream);
-        // BufferedReader reader = new BufferedReader(ireader);
-        // StringBuffer sb = new StringBuffer();
-        // while((user_str = reader.readLine())!= null){
-        //    sb.append(user_str);
-        // }
         int i;
         while((i = istream.read())!=-1) {
-         
             user_str = user_str+(char)i;
-         }
+        }
         return user_str;
+    }
+
+    /**
+     * reads the type
+     * */
+    private String read_serv_type(Part part)throws IOException{
+        String service = "";
+        if (!part.getName().equals("serv_type")) return service;
+        InputStream istream = part.getInputStream();
+        int i;
+        while((i = istream.read())!=-1) {
+            service = service+(char)i;
+        }
+        return service;
     }
 
     /**
