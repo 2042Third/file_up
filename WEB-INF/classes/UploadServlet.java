@@ -43,21 +43,16 @@ public class UploadServlet extends HttpServlet {
             HttpServletResponse response) throws ServletException, IOException {
         System.out.println("#############POST REQUEST###############");
         ServiceTypePDM serv_type = ServiceTypePDM.NON;
-        // gets absolute path of the web application
         String appPath = request.getServletContext().getRealPath("");
-        // constructs path of the directory to save uploaded file
         String savePath = appPath + File.separator + SAVE_DIR;
          
-        // creates the save directory if it does not exists
         File fileSaveDir = new File(savePath);
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdir();
         }
-        // print_out(request);
         String fileName = "";
         for (Part part : request.getParts()) {
             System.out.println("Part: "+part.getName());
-            
             //get the purpose of the connection, and resolve
             switch(part.getName()){
                 case "file":
@@ -70,39 +65,44 @@ public class UploadServlet extends HttpServlet {
                 case "serv_type":
                     if(read_serv_type(part).equals("pdm_note_sync")){
                         serv_type=ServiceTypePDM.PDMNOTESYNC;
-                        System.out.println("\tService: pdm note sync");
+                        System.out.println("\t[Service Resolved] pdm note sync");
                     }
                     continue;
             }
         }
+        switch(serv_type){
+            case ServiceTypePDM.PDMNOTESYNC:
+                save_the_file(fileName,savePath, request.getPart("file"));
+                request.setAttribute("message", "Upload has been done successfully!");
+                getServletContext().getRequestDispatcher("/message.jsp").forward(
+                        request, response);
+                break;
+        }
+    }
+
+    /**
+     *  Writes the file
+     * 
+     * */
+    private void save_the_file(String fileName,String savePath, Part part ){
         if (fileName.equals("pdm_rc.conf")){//config saving
             fileName = new File(fileName).getName();
             File configSaveDir = new File(savePath+File.separator+"config");
             if (!configSaveDir.exists()) {
                 configSaveDir.mkdir();
             }
-            request.getPart("file").write(savePath+File.separator+"config" 
+            part.write(savePath+File.separator+"config" 
                                             + File.separator + fileName);
-            request.setAttribute("message", "Upload has been done successfully!");
-            getServletContext().getRequestDispatcher("/message.jsp").forward(
-                    request, response);
         }
         else if(fileName!=""){
             fileName = new File(fileName).getName();
-
-            request.getPart("file").write(savePath + File.separator + fileName);
-            request.setAttribute("message", "Upload has been done successfully!");
-            getServletContext().getRequestDispatcher("/message.jsp").forward(
-                    request, response);
+            part.write(savePath + File.separator + fileName);
         }
-
-        // HttpHeaders headers = response.headers();
-        // headers.map().forEach((k, v) -> System.out.println(k + ":" + v));
-        System.out.println(request.getParts());
-
-        // System.out.printf("%s\n%s\n",request.statusCode(),request.body());
     }
 
+    /**
+     * Get the file path the file to be saved
+     * */
     private String set_up_user_path(Part part,String savePath){
         String userName = extractUserName(part); 
         try{
@@ -112,15 +112,15 @@ public class UploadServlet extends HttpServlet {
                 File fileSaveDir = new File(savePath);
                 if (!fileSaveDir.exists()) {
                     fileSaveDir.mkdir();
-                    System.out.println("New user, access account for \""+userName+"\", saving in process...");
+                    System.out.println("\t[Account Access]New user, access account for \""+userName+"\", saving in process...");
                 }
                 else {
-                    System.out.println("Access account for \""+userName+"\", saving in process...");
+                    System.out.println("\t[Account Access]Access account for \""+userName+"\", saving in process...");
                 }
             }
         }
         catch(Exception e){
-            System.out.println("get user name failure!");
+            System.out.println("\t[Account Access]get user name failure!");
         }
         return savePath;
     }
