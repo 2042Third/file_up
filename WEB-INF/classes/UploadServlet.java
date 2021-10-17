@@ -84,7 +84,7 @@ public class UploadServlet extends HttpServlet {
      *  Writes the file
      * 
      * */
-    private void save_the_file(String fileName,String savePath, Part part ){
+    private void save_the_file(String fileName,String savePath, Part part )throws IOException{
         if (fileName.equals("pdm_rc.conf")){//config saving
             fileName = new File(fileName).getName();
             File configSaveDir = new File(savePath+File.separator+"config");
