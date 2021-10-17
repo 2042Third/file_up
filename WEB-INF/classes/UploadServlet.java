@@ -1,5 +1,5 @@
 package net.codejava.servlet;
-import net.codejava.servlet.ServiceTypePDM;
+import net.codejava.servlet.*;
 import java.io.File;
 import java.util.*;
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class UploadServlet extends HttpServlet {
                     continue;
                 case "user_name":
                     userName = extractUserName(part);
-                    savePath = set_up_user_path(part,savePath,fileSaveDir);
+                    savePath = set_up_user_path(part,savePath);
                     continue;
                 case "serv_type":
                     if(read_serv_type(part).equals("pdm_note_sync")){
@@ -104,13 +104,13 @@ public class UploadServlet extends HttpServlet {
         // System.out.printf("%s\n%s\n",request.statusCode(),request.body());
     }
 
-    private String set_up_user_path(Part part,String savePath,String fileSaveDir){
+    private String set_up_user_path(Part part,String savePath){
         String userName = extractUserName(part); 
         try{
             userName = read_user_name(part);
             if(!userName.equals("")){
                 savePath = savePath + File.separator  + userName; // Checks if the user exists. Make a folder for the user if it doesn't
-                fileSaveDir = new File(savePath);
+                File fileSaveDir = new File(savePath);
                 if (!fileSaveDir.exists()) {
                     fileSaveDir.mkdir();
                     System.out.println("New user, access account for \""+userName+"\", saving in process...");
