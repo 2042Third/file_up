@@ -65,7 +65,6 @@ public class UploadServlet extends HttpServlet {
                     fileName = fileNameTmp;
                     continue;
                 case "user_name":
-                    userName = extractUserName(part);
                     savePath = set_up_user_path(part,savePath);
                     continue;
                 case "serv_type":
